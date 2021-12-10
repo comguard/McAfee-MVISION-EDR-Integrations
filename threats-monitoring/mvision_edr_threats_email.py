@@ -121,6 +121,31 @@ class EDR():
                         detections = self.get_detections(threat['id'])
                         threat['url'] = 'https://ui.' + self.base_url + '/monitoring/#/workspace/72,TOTAL_THREATS,{0}'\
                             .format(threat['id'])
+                        
+                        # Set severity of detection
+                        severity = threat["severity"]
+                        severityINT = 0
+                        if severity == "s0":
+                            severity = "INFO"
+                            severityINT = 0
+                        if severity == "s1":
+                            severity = "VERY LOW"
+                            severityINT = 1
+                        if severity == "s2":
+                            severity = "LOW"
+                            severityINT = 2
+                        if severity == "s3":
+                            severity = "MEDIUM"
+                            severityINT = 3
+                        if severity == "s4":
+                            severity = "HIGH"
+                            severityINT = 4
+                        if severity == "s5":
+                            severity = "CRITICAL"
+                            severityINT = 5
+                        
+                        if args.minimum_severity > severityINT:
+                            continue
                             
                         hostnames = []
                         ipAddresses = []
@@ -148,21 +173,6 @@ class EDR():
                                 self.logger.info('Mail server port is not defined, using default 25')
                             
                             newThreat = json.dumps(threat)
-                            
-                            # Set severity of detection
-                            severity = threat["severity"]
-                            if severity == "s0":
-                                severity = "INFO"
-                            if severity == "s1":
-                                severity = "VERY LOW"
-                            if severity == "s2":
-                                severity = "LOW"
-                            if severity == "s3":
-                                severity = "MEDIUM"
-                            if severity == "s4":
-                                severity = "HIGH"
-                            if severity == "s5":
-                                severity = "CRITICAL"
                             
                             hostnamesFormatted = ""
                             first = True
@@ -270,7 +280,7 @@ class EDR():
         return Template(template_file_content)
 
 if __name__ == '__main__':
-    usage = """python mvision_edr_threats.py -R <REGION> -U <USERNAME> -P <PASSWORD> -D <DETAILS> -L <MAX RESULTS> -S <SENDER EMAIL> -T <RECIPIENT EMAIL> -M <MAIL SERVER IP> -MP <MAIL SERVER PORT>"""
+    usage = """python mvision_edr_threats.py -R <REGION> -U <USERNAME> -P <PASSWORD> -D <DETAILS> -L <MAX RESULTS> -MS <MINIMUM SEVERITY> -S <SENDER EMAIL> -T <RECIPIENT EMAIL> -M <MAIL SERVER IP> -MP <MAIL SERVER PORT>"""
     title = 'McAfee EDR Python API'
     parser = ArgumentParser(description=title, usage=usage, formatter_class=RawTextHelpFormatter)
 
@@ -294,6 +304,10 @@ if __name__ == '__main__':
     parser.add_argument('--limit', '-L',
                         required=True, type=int,
                         help='Maximum number of returned items')
+    
+    parser.add_argument('--minimum-severity', '-MS',
+                        required=False, type=int,
+                        help='Minimum severity of alert', choices=[0, 1, 2, 3, 4, 5])
 
     parser.add_argument('--sender', '-S',
                         required=True, type=str,
