@@ -1,0 +1,6 @@
+Name: ${NAME}
+Type: ${TYPE}
+Severity: ${SEVERITY}
+Hostname: ${HOSTNAME}
+IP address: ${IP}
+URL: ${URL}
