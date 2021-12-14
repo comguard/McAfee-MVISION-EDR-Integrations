@@ -19,108 +19,30 @@ Client_ID and Client_Secrets can get generated with the [mvision_edr_creds_gener
 
 1. Place the script in an accessible directory e.g.
 
-   ```
-   /opt/script/mvision_edr_threats.py
-   ```
+```sh
+usage: python mvision_edr_threats.py -R <REGION> -U <USERNAME> -P <PASSWORD> -D <DETAILS> -L <MAX RESULTS> -MS <MINIMUM SEVERITY> -S <SENDER EMAIL> -T <RECIPIENT EMAIL> -M <MAIL SERVER IP> -MP <MAIL SERVER PORT>
 
 
-2. Make sure the following dependencies are installed
-
-   ```
-   python3 -m pip install requests python-dotenv python-dateutil pytz
-   ```
-
-
-3. Create a new file called .env in the same directory as the provided script (e.g. /opt/script/.env) and provide all required parameters. Leave empty if parameter does not apply.
-
-   ```
-   vim /opt/script/.env
-   ```
-
-   Content:
-   ```
-   # EDR settings (required)
-   EDR_REGION = US-E
-   EDR_CLIENT_ID = 
-   EDR_CLIENT_SECRET =
-
-   # Pulling Interval in seconds (required)
-   INTERVAL  = 300
-
-   # Initial Pull in days
-   INITIAL_PULL = 3
-
-   # SYSLOG settings (optional)
-   SYSLOG_IP =
-   SYSLOG_PORT =
-   
-   # Cache File location (required)
-   CACHE_DIR = /opt/script
-
-   # Proxy settings (optional)
-   PROXY =
-   VALID =
-
-   # Logging (required)
-   LOG_LEVEL = DEBUG
-   LOG_DIR = /opt/script/logs
-
-   # Write Threat Detections into File (optional)
-   THREAT_LOG = True
-   THREAT_DIR = /opt/script/threats
-   ```
-
-4. Create a new file in the service directory
-
-   ```
-   vim /etc/systemd/system/mvision_edr_threats.service
-   ```
-
-   Content:
-   ```
-   [Unit]
-   Description=MVISION EDR Threat Pull
-   After=network-online.target
-   Wants=network-online.target
-
-   [Service]
-   Type=simple
-   WorkingDirectory=/opt/script
-   ExecStart=/usr/bin/python3 /opt/script/mvision_edr_threats.py
-   Restart=on-failure
-   RestartSec=5
-
-   [Install]
-   WantedBy=multi-user.target
-   ```
-
-5. Restart the systemctl daemon loader
-   
-   ```
-   systemctl daemon-reload
-   ```
-   
-6. Start the service
-
-   ```
-   systemctl start mvision_edr_threats.service
-   ```
-   To start the service on system startup execute the following command
-
-   ```
-   systemctl enable mvision_edr_threats.service
-   ```
-   
-7. Check the status of the service
-   
-   ```
-   systemctl status mvision_edr_threats.service
-   ```
-   ![1](https://user-images.githubusercontent.com/25227268/173325218-0f6413fa-c44d-4509-8d3d-44eca0b9c726.png)
-
-8. You can also check the logs of the service
-
-   ```
-   tail -f /opt/script/logs/mvedr_logger.log
-   ```
-   ![2](https://user-images.githubusercontent.com/25227268/173325628-7a044943-4df3-422e-a05e-764e3826c97e.png)
+optional arguments:
+  -h, --help            show this help message and exit
+  --region {EU,US-W,US-E,SY,GOV}, -R {EU,US-W,US-E,SY,GOV}
+                        MVISION EDR Tenant Location
+  --client_id CLIENT_ID, -C CLIENT_ID
+                        MVISION EDR Client ID
+  --client_secret CLIENT_SECRET, -S CLIENT_SECRET
+                        MVISION EDR Client Secret
+  --trace {True,False}, -T {True,False}
+                        EXPERIMENTAL: Enrich threat information with trace data
+  --limit LIMIT, -L LIMIT
+                        Maximum number of returned items
+  --minimum-severity {0,1,2,3,4,5}, -MS {0,1,2,3,4,5}
+                        Minimum event severity to send notification
+  --sender SENDER_EMAIL, -S SENDER_EMAIL
+                        Sender email address
+  --recipient RECIPIENT_EMAIL, -T RECIPIENT_EMAIL
+                        Recipient email address. If more than one, use -T multiple times.
+  --mail-ip MAIL_SERVER_IP, -M MAIL_SERVER_IP
+                        SMTP relay server IP address
+  --mail-port MAIL_SERVER_PORT, -MP MAIL_SERVER_PORT
+                        SMTP relay server port
+```
