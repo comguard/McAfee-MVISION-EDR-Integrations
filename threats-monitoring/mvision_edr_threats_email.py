@@ -197,13 +197,13 @@ class EDR():
                             message = message_template.substitute(NAME = threat["name"], TYPE=threat["type"], SEVERITY=severity, HOSTNAME=hostnamesFormatted, IP=ipAddressesFormatted, URL=threat["url"])
                             
                             msg['From'] = args.sender
-                            msg['To'] = args.reciever
+                            msg['To'] = ", ".join(args.recipient)
                             msg['Subject'] = email_subject
                             
                             msg.attach(MIMEText(message, 'plain'))
                             
                             smtp = smtplib.SMTP(args.mail_ip, mailPort)
-                            smtp.send_message(msg)
+                            smtp.sendmail(args.sender, args.recipient, msg.as_string())
                             self.logger.info('Successfully sent email')
                             smtp.quit
                         
@@ -313,9 +313,9 @@ if __name__ == '__main__':
                         required=True, type=str,
                         help='Sender email address')
     
-    parser.add_argument('--reciever', '-T',
-                        required=True, type=str,
-                        help='Recipient email address')
+    parser.add_argument('--recipient', '-T',
+                        required=True, action='append',
+                        help='Recipient email address. If more than one, use -T multiple times')
     
     parser.add_argument('--mail-ip', '-M',
                         required=False, type=str,
