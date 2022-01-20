@@ -123,29 +123,30 @@ class EDR():
                             .format(threat['id'])
                         
                         # Set severity of detection
-                        severity = threat["severity"]
-                        severityINT = 0
-                        if severity == "s0":
-                            severity = "INFO"
+                        if args.minimum_severity is not None:
+                            severity = threat["severity"]
                             severityINT = 0
-                        if severity == "s1":
-                            severity = "VERY LOW"
-                            severityINT = 1
-                        if severity == "s2":
-                            severity = "LOW"
-                            severityINT = 2
-                        if severity == "s3":
-                            severity = "MEDIUM"
-                            severityINT = 3
-                        if severity == "s4":
-                            severity = "HIGH"
-                            severityINT = 4
-                        if severity == "s5":
-                            severity = "CRITICAL"
-                            severityINT = 5
-                        
-                        if args.minimum_severity > severityINT:
-                            continue
+                            if severity == "s0":
+                                severity = "INFO"
+                                severityINT = 0
+                            if severity == "s1":
+                                severity = "VERY LOW"
+                                severityINT = 1
+                            if severity == "s2":
+                                severity = "LOW"
+                                severityINT = 2
+                            if severity == "s3":
+                                severity = "MEDIUM"
+                                severityINT = 3
+                            if severity == "s4":
+                                severity = "HIGH"
+                                severityINT = 4
+                            if severity == "s5":
+                                severity = "CRITICAL"
+                                severityINT = 5
+                            
+                            if args.minimum_severity > severityINT:
+                                continue
                             
                         hostnames = []
                         ipAddresses = []
@@ -295,11 +296,6 @@ if __name__ == '__main__':
     parser.add_argument('--password', '-P',
                         required=False, type=str,
                         help='MVISION EDR Password')
-
-    parser.add_argument('--details', '-D',
-                        required=False, type=str, choices=['True', 'False'],
-                        default='False',
-                        help='EXPERIMENTAL: Enrich threat information with trace data')
 
     parser.add_argument('--limit', '-L',
                         required=True, type=int,
