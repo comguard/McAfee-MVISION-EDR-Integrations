@@ -63,7 +63,6 @@ class EDR():
             self.last_check = (datetime.now() - timedelta(days=7)).strftime(self.pattern)
 
         self.limit = args.limit
-        self.details = args.details
 
         self.auth(creds)
 
@@ -153,13 +152,6 @@ class EDR():
 
                         for detection in detections:
                             threat['detection'] = detection
-
-                            if self.details == 'True':
-                                maGuid = detection['host']['maGuid']
-                                traceId = detection['traceId']
-
-                                traces = self.get_trace(maGuid, traceId)
-                                detection['traces'] = traces
 
                             self.logger.info(json.dumps(threat))
                             
@@ -281,7 +273,7 @@ class EDR():
         return Template(template_file_content)
 
 if __name__ == '__main__':
-    usage = """python mvision_edr_threats.py -R <REGION> -U <USERNAME> -P <PASSWORD> -D <DETAILS> -L <MAX RESULTS> -MS <MINIMUM SEVERITY> -S <SENDER EMAIL> -T <RECIPIENT EMAIL> -M <MAIL SERVER IP> -MP <MAIL SERVER PORT>"""
+    usage = """python mvision_edr_threats.py -R <REGION> -U <USERNAME> -P <PASSWORD> -L <MAX RESULTS> -MS <MINIMUM SEVERITY> -S <SENDER EMAIL> -T <RECIPIENT EMAIL> -M <MAIL SERVER IP> -MP <MAIL SERVER PORT>"""
     title = 'McAfee EDR Python API'
     parser = ArgumentParser(description=title, usage=usage, formatter_class=RawTextHelpFormatter)
 
