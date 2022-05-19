@@ -2,7 +2,9 @@
 
 ## mvision_edr_threats_email
 
-This is a script to retrieve the threat detections from MVISION EDR (Monitoring Dashboard) and send them via email. The script requires a username, password, sender's and recepient's email addresses, mail server IP address and limit to query the threats. The script will write a file called cache.log to safe the last threat detection date. In case of internet connection issue or script execution issue it makes sure to pull all newest threat detections.
+This is a script to retrieve the threat detections from MVISION EDR (Monitoring Dashboard) and send them via email. The script requires tenant_region, client_id and client_secret to pull the latest threats, and sender's and recepient's email addresses, mail server IP address to send the threats. The script will write a file called cache.log to safe the last threat detection date. In case of internet connection issue or script execution issue it makes sure to pull all newest threat detections.
+
+Client_ID and Client_Secrets can get generated with the [mvision_edr_creds_generator.py](https://github.com/comguard/McAfee-MVISION-EDR-Integrations/blob/master/mvision_edr_creds_generator.py) script posted in the main [repository](https://github.com/comguard/McAfee-MVISION-EDR-Integrations).
 
 Further the script allows to specify SMTP port (default is 25) and minimum severity of threats, that will be processed.
 
@@ -16,11 +18,12 @@ optional arguments:
   -h, --help            show this help message and exit
   --region {EU,US-W,US-E,SY,GOV}, -R {EU,US-W,US-E,SY,GOV}
                         MVISION EDR Tenant Location
-  --user USER, -U USER  MVISION EDR Username
-  --password PASSWORD, -P PASSWORD
-                        MVISION EDR Password
-  --limit LIMIT, -L LIMIT
-                        Maximum number of returned items
+  --client_id CLIENT_ID, -C CLIENT_ID
+                        MVISION EDR Client ID
+  --client_secret CLIENT_SECRET, -S CLIENT_SECRET
+                        MVISION EDR Client Secret
+  --loglevel {INFO,DEBUG}, -LL {INFO,DEBUG}
+                        Set Log Level
   --minimum-severity {0,1,2,3,4,5}, -MS {0,1,2,3,4,5}
                         Minimum event severity to send notification
   --sender SENDER_EMAIL, -S SENDER_EMAIL
@@ -35,7 +38,9 @@ optional arguments:
 
 ## mvision_edr_threats_quarantine
 
-This is a script to retrieve the threat detections from MVISION EDR (Monitoring Dashboard), and automatically quarantine the hosts. The script requires a username, password and a limit to query the threats. The script will write a file called cache.log to safe the last threat detection date. In case of internet connection issue or script execution issue it makes sure to pull all newest threat detections.
+This is a script to retrieve the threat detections from MVISION EDR (Monitoring Dashboard), and automatically quarantine the hosts. The script requires tenant_region, client_id and client_secret to pull the latest threats and quarantine the endpoints. The script will write a file called cache.log to safe the last threat detection date. In case of internet connection issue or script execution issue it makes sure to pull all newest threat detections.
+
+Client_ID and Client_Secrets can get generated with the [mvision_edr_creds_generator.py](https://github.com/comguard/McAfee-MVISION-EDR-Integrations/blob/master/mvision_edr_creds_generator.py) script posted in the main [repository](https://github.com/comguard/McAfee-MVISION-EDR-Integrations).
 
 Further the script allows to specify minimum severity of the threats, that will be processed.
 
@@ -50,11 +55,12 @@ optional arguments:
   -h, --help            show this help message and exit
   --region {EU,US-W,US-E,SY,GOV}, -R {EU,US-W,US-E,SY,GOV}
                         MVISION EDR Tenant Location
-  --user USER, -U USER  MVISION EDR Username
-  --password PASSWORD, -P PASSWORD
-                        MVISION EDR Password
-  --limit LIMIT, -L LIMIT
-                        Maximum number of returned items
+  --client_id CLIENT_ID, -C CLIENT_ID
+                        MVISION EDR Client ID
+  --client_secret CLIENT_SECRET, -S CLIENT_SECRET
+                        MVISION EDR Client Secret
+  --loglevel {INFO,DEBUG}, -LL {INFO,DEBUG}
+                        Set Log Level
   --minimum-severity {0,1,2,3,4,5}, -MS {0,1,2,3,4,5}
                         Minimum event severity to send notification
 ```
@@ -62,6 +68,8 @@ optional arguments:
 ## mvision_edr_threats
 
 This is a script to retrieve the threat detections from MVISION EDR (Monitoring Dashboard) and send it via syslog. The script requires a username, password and a limit to query the threats. The script will write a file called cache.log to safe the last threat detection date. In case of internet connection issue or script execution issue it makes sure to pull all newest threat detections.
+
+Client_ID and Client_Secrets can get generated with the [mvision_edr_creds_generator.py](https://github.com/comguard/McAfee-MVISION-EDR-Integrations/blob/master/mvision_edr_creds_generator.py) script posted in the main [repository](https://github.com/comguard/McAfee-MVISION-EDR-Integrations).
 
 Further the script allows to retrieve additional details about the threat itself (-D / --details flag). This includes traces of the affected systems. This feature is experimental.
 
@@ -76,13 +84,12 @@ optional arguments:
   -h, --help            show this help message and exit
   --region {EU,US-W,US-E,SY,GOV}, -R {EU,US-W,US-E,SY,GOV}
                         MVISION EDR Tenant Location
-  --user USER, -U USER  MVISION EDR Username
-  --password PASSWORD, -P PASSWORD
-                        MVISION EDR Password
-  --details {True,False}, -D {True,False}
-                        EXPERIMENTAL: Enrich threat information with trace data
-  --limit LIMIT, -L LIMIT
-                        Maximum number of returned items
+  --client_id CLIENT_ID, -C CLIENT_ID
+                        MVISION EDR Client ID
+  --client_secret CLIENT_SECRET, -S CLIENT_SECRET
+                        MVISION EDR Client Secret
+  --loglevel {INFO,DEBUG}, -LL {INFO,DEBUG}
+                        Set Log Level
   --syslog-ip SYSLOG_IP, -S SYSLOG_IP
                         Syslog IP Address
   --syslog-port SYSLOG_PORT, -SP SYSLOG_PORT
