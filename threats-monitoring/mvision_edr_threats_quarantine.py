@@ -14,6 +14,7 @@ import os
 from argparse import ArgumentParser, RawTextHelpFormatter
 from datetime import datetime, timedelta
 from logging.handlers import SysLogHandler
+from sys import exit
 
 
 class EDR():

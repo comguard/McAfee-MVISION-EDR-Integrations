@@ -17,6 +17,7 @@ from logging.handlers import SysLogHandler
 from string import Template
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from sys import exit
 
 
 class EDR():
