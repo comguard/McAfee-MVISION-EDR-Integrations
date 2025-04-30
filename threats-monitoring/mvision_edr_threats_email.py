@@ -22,7 +22,7 @@ from sys import exit
 
 class EDR():
     def __init__(self):
-        self.iam_url = 'iam.mcafee-cloud.com/iam/v1.1'
+        self.iam_url = 'iam.cloud.trellix.com/iam/v1.0'
         if args.region == 'EU':
             self.base_url = 'soc.eu-central-1.trellix.com'
         elif args.region == 'US-W':
